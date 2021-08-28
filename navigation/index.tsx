@@ -8,16 +8,20 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+import { ColorSchemeName, Pressable,Text,View,Image,useWindowDimensions } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+
+import HomeScreen from '../screens/HomeScreen';
+import ChatRoomScreen from '../screens/ChatRoomScreen';
+import { Feather } from '@expo/vector-icons';
+
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -35,16 +39,65 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function RootNavigator() {
+function RootNavigator() { 
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen 
+        name = "HomeScreen" 
+        component ={HomeScreen} 
+        options={{headerTitle: HomeHeader, headerTitleAlign : 'center' }}
+      />
+      <Stack.Screen name="ChatRoom" 
+      component={ChatRoomScreen} 
+      options = {{headerTitle : ChartRoomHeader, headerTitleAlign : 'center', headerBackTitleVisible : false}}
+      />
+
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
-      </Stack.Group>
     </Stack.Navigator>
   );
+}
+
+const HomeHeader  = (props) =>{
+  const {width} = useWindowDimensions()
+  return (
+    <View style = {{
+      flexDirection : 'row',
+      flex : 1,
+      justifyContent : 'space-between',
+      padding : 10,
+      alignItems : 'center',
+      width : width,
+      position : 'absolute',
+      }}>
+      <Image 
+      source = {{uri : 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png'}} 
+      style = {{width : 30, height : 30, borderRadius : 30}} />
+      <Text style = {{textAlign : 'center',flex : 1,fontWeight : 'bold',fontSize : 18, color : 'darkblue'}}>Signal</Text>
+    <Feather name="camera" size={24} color="black" style = {{marginHorizontal : 5}}/>
+    <Feather name="edit-2" size={24} color="black" style = {{paddingRight : 10, marginHorizontal : 5}}/>
+    </View>);
+}
+
+const ChartRoomHeader  = (props) =>{
+  const {width} = useWindowDimensions()
+  return (
+    <View style = {{
+      flexDirection : 'row',
+      flex : 1,
+      justifyContent : 'space-between',
+      padding : 10,
+      width : width - 60,
+      marginLeft : 60,
+      alignItems : 'center',
+      position : 'absolute'
+      }}>
+      <Image 
+      source = {{uri : 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/elon.png'}} 
+      style = {{width : 30, height : 30, borderRadius : 30}} />
+      <Text style = {{flex : 1,marginLeft : 10, fontWeight : 'bold',fontSize : 18, color : 'darkblue'}}>{props.children}</Text>
+    <Feather name="camera" size={24} color="black" style = {{marginHorizontal : 5}} />
+    <Feather name="edit-2" size={24} color="black" style = {{paddingRight : 10, marginHorizontal : 5}}/>
+    </View>);
 }
 
 /**
