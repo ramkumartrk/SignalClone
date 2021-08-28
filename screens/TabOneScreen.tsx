@@ -1,33 +1,20 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import {StyleSheet,View,FlatList,Text} from 'react-native'
+import ChatRoomItem from '../components/ChatRoomItem/ChatRoomItem';
+import ChatRoomData from '../assets/dummy-data/ChatRooms';
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
-
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export default function TabOneScreen(){
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+    <View style = {styles.page}>
+      {/* <FlatList horizontal showsHorizontalScrollIndicator = {false} data = {ChatRoomData} showsVerticalScrollIndicator = {false} renderItem = {( {item} ) => <ChatRoomItem chatRoom = {item}/>}/> */}
+      {/* ListHeaderComponent = {()=> <Text>Messages</Text> */}
+      <FlatList data = {ChatRoomData} showsVerticalScrollIndicator = {false} renderItem = {( {item} ) => <ChatRoomItem chatRoom = {item}/>}/>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
+  page : {
+    backgroundColor : 'white'
+  }
 });
